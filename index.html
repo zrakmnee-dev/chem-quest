@@ -10500,7 +10500,7 @@ document.addEventListener("click", e => {
   if(b.hasAttribute("data-remlater")){ G.remind = { ...remPref(), asked: true }; save(); render(); return; }
   if(b.dataset.setrem){ if(b.dataset.setrem === "on") remTurnOn(); else { G.remind = { ...remPref(), on: false, asked: true }; save(); planReminders(); render(); } return; }
   if(b.dataset.setsnd){ const [k, v] = b.dataset.setsnd.split(":"); G.snd = { ...sndPref(), [k]: v === "true" ? true : v === "false" ? false : v }; save(); render(); if(k !== "tap") play("done", true); return; }
-  if(b.hasAttribute("data-sndtest")){ sndInit(); setTimeout(() => play("done", true), 30); return; }
+  if(b.hasAttribute("data-sndtest")){ sndUnlock(); play("done", true); return; }
   if(b.dataset.setfs){ G.fs = b.dataset.setfs; save(); applySkin(); render(); return; }
   if(b.hasAttribute("data-replan")){ weekPlan(true); render(); return; }
   if(b.hasAttribute("data-review")){ if(reviewUnits().length) startSession("review", { id: null, title: "今日の復習" }); return; }
@@ -10656,11 +10656,22 @@ function play(kind, force){
   const P = sndPref();
   if(!force && ((kind === "tap" || kind === "key") ? !P.tap : !P.fx)) return;
   if(P.vib && window.QuestHaptic && ["done", "ng", "clear", "hit", "streak"].includes(kind)) window.QuestHaptic(kind);
-  if(!SND.ctx || SND.ctx.state !== "running" || !SOUNDS[kind]) return;
-  try { SOUNDS[kind](SND.ctx.currentTime + 0.005, SVOL[P.vol] || 1); } catch {}
+  if(!SND.ctx || !SOUNDS[kind]) return;
+  const go = () => { try { SOUNDS[kind](SND.ctx.currentTime + 0.005, SVOL[P.vol] || 1); } catch {} };
+  if(SND.ctx.state === "running") go();
+  else SND.ctx.resume().then(() => { if(SND.ctx.state === "running") go(); }).catch(() => {});
+}
+/* スマホでは、指でふれた瞬間（pointerdown）は「ユーザーの操作」と見なされず、音を出す許可がもらえない。
+   指をはなしたとき・タップしたとき（touchend / pointerup / click）に音の準備と解除をする。
+   iPhone は無音を一度鳴らすと、そのあと効果音が出るようになる */
+function sndUnlock(){
+  sndInit(); const c = SND.ctx; if(!c) return;
+  if(c.state !== "running") c.resume().catch(() => {});
+  if(!SND.unlocked){ try { const buf = c.createBuffer(1, 1, 22050), s = c.createBufferSource(); s.buffer = buf; s.connect(c.destination); s.start(0); SND.unlocked = true; } catch {} }
 }
 document.addEventListener("pointerdown", sndInit, { capture: true });
-document.addEventListener("keydown", sndInit, { capture: true });
+["touchend", "pointerup", "click", "keydown"].forEach(ev => document.addEventListener(ev, sndUnlock, { capture: true, passive: true }));
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible" && SND.ctx && SND.ctx.state !== "running") SND.unlocked = false; });
 document.addEventListener("click", e => {
   const b = e.target.closest && e.target.closest("button"); if(!b || b.disabled) return;
   if(b.dataset.choice != null || b.hasAttribute("data-check") || b.hasAttribute("data-tacheck") || b.hasAttribute("data-tcheck") || b.dataset.key === "ok" || b.hasAttribute("data-sndtest")) return;
