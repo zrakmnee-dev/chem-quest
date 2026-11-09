@@ -8845,7 +8845,7 @@ function summaryView(){
     const rng = (mk, ki) => { const a = Math.round(devAt(pl.th - pl.sd, mk, ki)), b = Math.round(devAt(pl.th + pl.sd, mk, ki)); return `${Math.max(25, Math.min(80, a))}〜${Math.max(25, Math.min(80, b))}`; };
     const nq = Object.values(pl.ans || {}).reduce((a, x) => a + x[1], 0);
     const rows = placeChapters().map(c => { const ch = CHAPTERS.find(x => x.id === c), sk = (pl.skip || []).includes(c), a = (pl.ans || {})[c];
-      return `<li class="${sk ? "ok" : "ng"}"><span>${sk ? "✓" : "・"}</span>${ch ? ch.title : c}<b>${sk ? `${a[0]}/${a[1]} 正解 → 飛ばす` : a ? `${a[0]}/${a[1]} 正解・確かさ ${Math.round(((pl.P || {})[c] || 0) * 100)}% → 練習` : "練習する"}</b></li>`; }).join("");
+      return `<li class="${sk ? "ok" : "ng"}"><span>${sk ? "✓" : "・"}</span>${ch ? ch.title : c}<b>${sk ? `${a[0]}/${a[1]} 正解 → 飛ばす` : a && a[0] < a[1] ? `${a[0]}/${a[1]} 正解 → ここで練習` : a ? `${a[0]}/${a[1]} 正解・あと少し → 練習` : "練習する"}</b></li>`; }).join("");
     head = `<div class="hero">${reactFlask(s, (pl.skipped || 0) > 0 ? "top" : "mid")}</div><h1>あなたの現在地</h1>
       <p class="muted" style="margin:6px 0 0">${nx ? `「${esc(CHAPTERS.find(c => c.id === nx.ch).title)}」の「${esc(nx.title)}」から始めます` : "すべて終わっています"}</p>
       <div class="card place-est" style="margin-top:14px;text-align:left"><div class="sec-h"><b>推定した${pl.kiso ? "化学基礎" : "化学"}の実力</b></div>
