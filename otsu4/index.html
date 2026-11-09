@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ff8a1f">
-<title>乙4クエスト｜危険物取扱者 乙種第4類</title>
+<meta name="theme-color" content="#22252a">
+<title>乙4パス｜危険物取扱者 乙種第4類</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 /* Layout: one-column game — sticky status bar, vertical stage map, sheet to start; play screen reuses the step drill */
 /* Visual world: a periodic table on deep navy — stages are element tiles, chapters are periods, each chapter has its own group color */
@@ -1814,7 +1814,7 @@ h1,.sum h1,.hero2 h2{font-weight:800}
 /* 文字の大きさ */
 :root[data-fs="l"] body{zoom:1.12}
 :root[data-fs="xl"] body{zoom:1.25}
-/* 乙4クエスト専用 */
+/* 乙4パス専用 */
 :root{--hourei:#1a8fd6;--butsuka:#2f9e06;--seishitsu:#e2541b}
 .apphead .logo{display:inline-block;width:30px;height:30px;vertical-align:-7px;margin-right:6px}
 .apphead .lvl small{display:block;font-size:11.5px;font-weight:700;color:var(--muted);line-height:1}
@@ -1933,6 +1933,52 @@ h1,.sum h1,.hero2 h2{font-weight:800}
 .abc li{background:var(--surface2);border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:16px;line-height:1.65;font-weight:600}
 .abc li b{color:var(--c);margin-right:2px}
 .hero2 .hsub{margin:4px 0 0;font-size:14.5px;color:#fff;opacity:.95;line-height:1.5}
+
+/* ===== 乙4パス：大人向けのテーマ（安全ヘルメットの黄色 × 墨色、角ゴシック、控えめな立体感） ===== */
+:root[data-skin="light"]{
+  --bg:#f2f1ec; --bg2:#f2f1ec; --surface:#ffffff; --surface2:#f6f5f0; --surface-2:#f6f5f0; --line:#e0ddd4; --line2:#cfcbc0; --rule:#22252a;
+  --ink:#22252a; --muted:#5d5f66;
+  --brand:#ffc21a; --btn:#24282f; --btn-sh:#0c0e11; --on-brand:#22252a; --on:#ffffff;
+  --accent:#6f5200; --accent-soft:#fff3cc; --accent-line:#ffd75e;
+  --gold:#ffc21a; --gold-ink:#6f5200; --gold-soft:#fff3cc;
+  --boss:#3b4048; --bossf:#4a505a; --boss-sh:#24282f; --boss-soft:#ecebe6;
+  --hero1:#fff; --hero2:#fff; --glow:#fff7dc;
+  --r-s:8px; --r-m:10px; --r-l:12px;
+  --font-display:"M PLUS 1p","Hiragino Sans","Yu Gothic",sans-serif;
+  --font-body:"M PLUS 1p","Hiragino Sans","Yu Gothic",sans-serif;
+}
+body{background:var(--bg)!important;font-family:var(--font-body)!important;letter-spacing:.01em}
+/* 立体感を控えめに */
+.btn{border-radius:10px!important;box-shadow:0 3px 0 var(--btn-sh)!important;letter-spacing:.06em}
+.btn.ghost{box-shadow:0 2px 0 var(--line2)!important}
+.hero2{border-radius:14px!important;box-shadow:0 3px 0 color-mix(in srgb,var(--cs) 75%,#000),0 14px 22px -16px rgba(0,0,0,.45)!important;position:relative;overflow:hidden;padding-top:22px!important}
+.hero2::after{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:repeating-linear-gradient(-45deg,#22252a 0 9px,#ffc21a 9px 18px)}
+.hero2 .bigtile{border-radius:12px!important}
+.chband{border-radius:10px!important;box-shadow:0 3px 0 color-mix(in srgb,var(--c) 70%,#000)!important}
+.card,.rowcard,.fcrow,.obopt,.ln-card{border-radius:12px}
+.card.streak,.card.forecast{border-radius:12px!important}
+/* マップのステージ：丸ではなく標識のような角丸の四角 */
+.stop .t.coin{border-radius:16px!important;box-shadow:0 5px 0 var(--cs)!important}
+.stop.boss .t.coin.mon{border-radius:50%!important}
+/* ヘッダー：ロゴマーク */
+.apphead .logo{display:none}
+.wordmark{display:inline-flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.04em}
+.wordmark .mk{width:30px;height:30px;border-radius:7px;background:#22252a;color:#ffc21a;display:grid;place-items:center;font-size:17px;font-weight:800;box-shadow:inset 0 -3px 0 #ffc21a}
+/* タブ：選択中は黄色の下線 */
+.tabbar button[aria-current="page"]{color:var(--ink)!important;background:none!important;box-shadow:inset 0 -3px 0 #ffc21a!important;border-radius:0!important}
+.tabbar button[aria-current="page"] .tico{transform:none!important}
+/* 正解ボタンの緑は残し、少しだけ落ち着かせる */
+.btn.okb{box-shadow:0 3px 0 var(--ok-sh)!important}
+/* 問題カードのタグ */
+.qcard .tag{border-radius:6px}
+.say-b{border-radius:12px!important}
+/* 地模様をやめて、無地の面に */
+:root{--hex:none}
+.tabbar button[aria-current="page"]{border-color:transparent!important}
+.tabbar button[aria-current="page"] svg{background:none!important}
+/* タブのアイコンはモノトーン、選択中だけ濃く */
+.tabbar .tico{filter:grayscale(1);opacity:.62}
+.tabbar button[aria-current="page"] .tico{filter:grayscale(1) brightness(.35);opacity:1}
 
 </style>
 </head>
@@ -2955,7 +3001,7 @@ const svgHeart = on => `<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.
 const svgLock = `<svg viewBox="0 0 24 24" style="width:40%;height:40%"><rect x="5" y="10" width="14" height="11" rx="2" fill="currentColor"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2.4" fill="none"/></svg>`;
 const svgFire = `<svg viewBox="0 0 24 24"><path d="M12 22c4.4 0 7-2.9 7-6.6 0-3.4-2.3-5.6-3.7-7.6-.4 1.6-1.2 2.7-2.3 3.2.3-3.4-1.2-6.5-4-8.5.2 3.4-1.8 5.4-3.3 7.4C4.5 11.6 5 13.2 5 15.4 5 19.1 7.6 22 12 22z" fill="currentColor"/></svg>`;
 const svgBolt = `<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6z" fill="currentColor"/></svg>`;
-/* 乙4クエストのキャラ「ポタ」：オレンジに着色されたガソリンのしずく。安全ヘルメットに「危」の標識 */
+/* 乙4パスのキャラ「ポタ」：オレンジに着色されたガソリンのしずく。安全ヘルメットに「危」の標識 */
 function svgMascot(mood = "happy", anim = ""){
   const sad = mood === "sad", cheer = mood === "cheer", think = mood === "think";
   const body = sad ? "#f0a35e" : "#ff8a1f", bodyD = sad ? "#c9844a" : "#e8640a", bodyL = sad ? "#f7c79a" : "#ffb35c";
@@ -3126,12 +3172,12 @@ function sndUnlock(){
   if(c.state !== "running") c.resume().catch(() => {});
   if(!SND.unlocked){ try { const buf = c.createBuffer(1, 1, 22050), s = c.createBufferSource(); s.buffer = buf; s.connect(c.destination); s.start(0); SND.unlocked = true; } catch {} }
 }
-/* ===== 乙4クエスト：危険物取扱者 乙種第4類の合格ルート ===== */
+/* ===== 乙4パス：危険物取扱者 乙種第4類の合格ルート ===== */
 const $ = s => document.querySelector(s);
 const SUBJ = [
-  { id: "hourei", name: "法令", full: "危険物に関する法令", n: 15, data: HOUREI, v: "#1a8fd6", s: "#12689c", sym: "法" },
-  { id: "butsuka", name: "物理・化学", full: "基礎的な物理学及び基礎的な化学", n: 10, data: BUTSUKA, v: "#2f9e06", s: "#226f05", sym: "物" },
-  { id: "seishitsu", name: "性質・消火", full: "危険物の性質並びにその火災予防及び消火の方法", n: 10, data: SEISHITSU, v: "#e2541b", s: "#a63c12", sym: "性" },
+  { id: "hourei", name: "法令", full: "危険物に関する法令", n: 15, data: HOUREI, v: "#2f6db3", s: "#1f4e85", sym: "法" },
+  { id: "butsuka", name: "物理・化学", full: "基礎的な物理学及び基礎的な化学", n: 10, data: BUTSUKA, v: "#2f7d57", s: "#215b3f", sym: "物" },
+  { id: "seishitsu", name: "性質・消火", full: "危険物の性質並びにその火災予防及び消火の方法", n: 10, data: SEISHITSU, v: "#c8452c", s: "#922f1d", sym: "性" },
 ];
 const SUB = Object.fromEntries(SUBJ.map(x => [x.id, x]));
 /* 追加の要点を各単元に合流させる */
@@ -3160,7 +3206,7 @@ function buildNodes(){
 }
 const NODES = buildNodes();
 const LESSON_LEN = 8;
-const COL = k => SUB[k] ? [SUB[k].v, SUB[k].s] : ["#a560e8", "#7c3fc0"];
+const COL = k => SUB[k] ? [SUB[k].v, SUB[k].s] : ["#4a505a", "#2b2f36"];
 const chv = k => COL(subjOf(k))[0], chs = k => COL(subjOf(k))[1], chc = chv;
 const subjOf = k => SUB[k] ? k : (CHAPTERS.find(c => c.id === k) || {}).subj || k;
 const BSYM = { hourei: "法", butsuka: "物", seishitsu: "性", mock: "模" };
@@ -3363,7 +3409,7 @@ function passVerdict(){
 let view = "home", S = null, summary = null, OB = null;
 const TABS = [["home", "ホーム", "home"], ["map", "マップ", "map"], ["practice", "練習", "book"], ["cards", "一問一答", "ta"], ["me", "記録", "me"]];
 function tabBar(){ return `<nav class="tabbar" aria-label="メニュー"><div class="in">${TABS.map(([id, l, ic]) => `<button data-tab="${id}" ${view === id ? 'aria-current="page"' : ""}><span class="tico">${TIC[ic]}</span>${l}</button>`).join("")}</div></nav>`; }
-function head(title, right = ""){ return `<div class="apphead"><h1>${title === "乙4クエスト" ? `<span class="logo" aria-hidden="true">${svgMascot("happy")}</span>` : ""}${title}</h1>${right}</div>`; }
+function head(title, right = ""){ return `<div class="apphead"><h1>${title === "乙4パス" ? `<span class="wordmark"><span class="mk" aria-hidden="true">4</span>乙4パス</span>` : title}</h1>${right}</div>`; }
 function daysToExam(){ const e = (G.profile || {}).exam; if(!e) return null; const d = Math.ceil((new Date(e + "T00:00:00") - new Date(today().replace(/-(\d)\b/g, "-0$1") + "T00:00:00")) / 864e5); return isNaN(d) ? null : d; }
 /* 今日の目標（セッション数）：残りのステージ・試験までの日数・合格の見込みから決める。1 セッション ≒ 5 分 */
 function sessionsToday(){ return G.sessDay && G.sessDay.d === today() ? G.sessDay.n : 0; }
@@ -3430,8 +3476,8 @@ function homeView(){
     hero = `<section class="hero2" style="--c:${chv(nx.subj)};--cs:${chs(nx.subj)}"><div class="hrow">${lesson ? `<div class="bigtile"><span class="sy">${nx.sym}</span></div>` : `<div class="bigtile boss"><div class="face">${svgBoss(nx.subj)}</div></div>`}
       <div class="hinfo"><span class="hk">${nx.type === "mock" ? "仕上げ" : `${SUB[nx.subj].name} › ${ch.title}`}</span><h2>${nx.title}</h2>${nx.type === "mock" ? "" : `<div class="strip">${strip}</div>`}</div></div>
       <button class="btn full go" data-start="${nx.id}">${nx.type === "lesson" ? "はじめる" : nx.type === "mock" ? "受ける" : "挑戦する"}</button></section>`;
-  } else hero = `<section class="hero2" style="--c:#a560e8;--cs:#7c3fc0"><div class="hinfo"><span class="hk">ルート完走</span><h2>模擬試験で仕上がりをキープ</h2></div><button class="btn full go" data-mockgo>模擬試験を受ける</button></section>`;
-  return `${head("乙4クエスト", dt != null && dt >= 0 ? `<span class="lvl"><small>試験まで</small>${dt}日</span>` : "")}
+  } else hero = `<section class="hero2" style="--c:#4a505a;--cs:#2b2f36"><div class="hinfo"><span class="hk">ルート完走</span><h2>模擬試験で仕上がりをキープ</h2></div><button class="btn full go" data-mockgo>模擬試験を受ける</button></section>`;
+  return `${head("乙4パス", dt != null && dt >= 0 ? `<span class="lvl"><small>試験まで</small>${dt}日</span>` : "")}
   <div class="stack">
     <div class="say home-say"><span class="say-m">${svgMascot("happy")}</span><p class="say-b">${planLine()}</p></div>
     ${hero}
@@ -3608,7 +3654,7 @@ function practiceView(){
   const calc = UNITS.filter(u => u.gen);
   return `${head("練習")}<div class="stack">
     <div class="say"><span class="say-m">${svgMascot("happy")}</span><p class="say-b">マップの続きのほかに、苦手なところだけ・計算だけ・本番形式だけを練習できます。</p></div>
-    <div class="list"><h3>本番形式</h3><button class="rowcard" data-mockgo><span class="ic" style="--c:#a560e8">${IC.ta}</span><span class="body"><span class="t">模擬試験（35 問）</span><span class="s">法令 15・物理化学 10・性質 10、すべて 5 択</span></span>${!isPaid() ? `<span class="pm2">${IC.crown}</span>` : ""}</button></div>
+    <div class="list"><h3>本番形式</h3><button class="rowcard" data-mockgo><span class="ic" style="--c:#4a505a">${IC.ta}</span><span class="body"><span class="t">模擬試験（35 問）</span><span class="s">法令 15・物理化学 10・性質 10、すべて 5 択</span></span>${!isPaid() ? `<span class="pm2">${IC.crown}</span>` : ""}</button></div>
     <div class="list"><h3>科目別 10 問</h3>${SUBJ.map(sb => `<button class="rowcard" data-drillsubj="${sb.id}"><span class="ic" style="--c:${sb.s}"><b>${sb.sym}</b></span><span class="body"><span class="t">${sb.name}</span><span class="s">${sb.full}</span></span></button>`).join("")}</div>
     <div class="list"><h3>計算ドリル（数値が毎回変わる）</h3>${calc.map(u => `<button class="rowcard" data-drillunit="${u.id}"><span class="ic" style="--c:${SUB[u.subj].s}"><b>${UNIT_SYM[u.id]}</b></span><span class="body"><span class="t">${u.title}</span><span class="s">${SUB[u.subj].name}</span></span></button>`).join("")}</div>
     ${weakCount() ? `<div class="list"><h3>苦手</h3><button class="rowcard" data-weak><span class="ic" style="--c:var(--warn)">${IC.redo}</span><span class="body"><span class="t">苦手ドリル</span><span class="s">まちがえた回数の多い問題から 10 問</span></span><span class="pill num">${weakCount()}</span></button></div>` : ""}
@@ -3689,7 +3735,7 @@ function openPaywall(){
 function onboardView(){
   const st = OB.step;
   const dots = `<div class="ob-dots">${[0, 1, 2].map(i => `<i class="${i <= st ? "on" : ""}"></i>`).join("")}</div>`;
-  if(st === 0) return `<div class="onboard">${dots}<div style="width:120px;margin:10px auto 0">${svgMascot("cheer", "jump")}</div><h1 style="text-align:center">乙4クエスト</h1>
+  if(st === 0) return `<div class="onboard">${dots}<div style="width:120px;margin:10px auto 0">${svgMascot("cheer", "jump")}</div><h1 style="text-align:center">乙4パス</h1>
     <p class="muted" style="text-align:center;margin:8px 0 18px;line-height:1.7">危険物取扱者 乙種第 4 類に、1 日 5 分から合格を目指すアプリです。<br>3 科目それぞれ 6 割以上を確実に超えるルートを用意しています。</p>
     <button class="btn full" data-ob="next">はじめる</button></div>`;
   if(st === 1) return `<div class="onboard">${dots}<h2>試験日は決まっていますか？</h2><p class="muted" style="margin:6px 0 12px">あとから設定で変えられます。</p>
