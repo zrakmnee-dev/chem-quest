@@ -1979,6 +1979,13 @@ body{background:var(--bg)!important;font-family:var(--font-body)!important;lette
 /* タブのアイコンはモノトーン、選択中だけ濃く */
 .tabbar .tico{filter:grayscale(1);opacity:.62}
 .tabbar button[aria-current="page"] .tico{filter:grayscale(1) brightness(.35);opacity:1}
+/* オープニング：乙4パスの色に（泡の代わりに黄色の火花、文字は墨色） */
+#splash{background:#fff}
+#splash .sp-b,#splash .sp-g{background:#ffc21a!important;border-color:#e0a400!important}
+#splash .sp-ring{border-color:#ffc21a!important}
+#splash .sp-t{color:#22252a!important;font-weight:800;font-size:34px}
+#splash .sp-sub{font-size:14px;font-weight:700;color:var(--muted);letter-spacing:.08em;opacity:0;animation:sp-fade .4s 1.25s both}
+#splash .sp-d{background:#e3e5e8}
 
 </style>
 </head>
@@ -3528,7 +3535,7 @@ function homeView(){
   } else hero = `<section class="hero2" style="--c:#4a505a;--cs:#2b2f36"><div class="hinfo"><span class="hk">ルート完走</span><h2>模擬試験で仕上がりをキープ</h2></div><button class="btn full go" data-mockgo>模擬試験を受ける</button></section>`;
   return `${head("乙4パス", dt != null && dt >= 0 ? `<span class="lvl"><small>試験まで</small>${dt}日</span>` : "")}
   <div class="stack">
-    <div class="say home-say"><span class="say-m">${svgMascot("happy")}</span><p class="say-b">${planLine()}</p></div>
+    <div class="say home-say"><span class="say-m">${(([m, a]) => svgMascot(m, a))([["happy", "nod"], ["happy", "sway"], ["cheer", "hop"], ["happy", ""]][new Date(now()).getDate() % 4])}</span><p class="say-b">${planLine()}</p></div>
     ${hero}
     ${forecastCard(true)}
     ${streakCard()}
@@ -3662,7 +3669,7 @@ function playView(){
   else input = c.done ? `<div class="numres ${c.ok ? "ok" : "ng"}">あなたの答え <b class="num">${c.picked}</b> ${q.unit}</div>` : `<form class="ansrow" id="numForm"><input id="numIn" class="act" inputmode="decimal" autocomplete="off" aria-label="答え" placeholder="数値"><span class="unitlab">${q.unit}</span></form><button class="btn full" data-numok style="margin-top:10px">答え合わせ</button>`;
   let fb = "";
   if(c.done){ const isLast = S.idx + 1 >= n;
-    fb = `<div class="pdone ${c.ok ? "ok" : "meh"}" role="status"><div class="pd-in"><div class="pd-h"><span class="pd-ic" aria-hidden="true">${svgMascot(c.ok ? "cheer" : "think", c.ok ? "hop" : "sweat")}</span><h2>${c.ok ? pick(["正解！", "その通り！", "ばっちり！"]) : "おしい！"}</h2></div>
+    fb = `<div class="pdone ${c.ok ? "ok" : "meh"}" role="status"><div class="pd-in"><div class="pd-h"><span class="pd-ic" aria-hidden="true">${pickOnce(c, "pd", c.ok ? (S.maxHearts ? [["cheer", "punch"], ["cheer", "jump"], ["cheer", "spin"]] : [["cheer", "hop"], ["cheer", "twirl"], ["happy", "hop"], ["cheer", "jump"]]) : [["think", "sweat"], ["sad", "oops"], ["sad", "shake"], ["think", "phew"]]).reduce((m, a) => svgMascot(m, a))}</span><h2>${c.ok ? pick(["正解！", "その通り！", "ばっちり！"]) : "おしい！"}</h2></div>
       ${q.type === "num" ? `<div class="pd-row"><span class="pd-a">答え <b class="num">${q.ans}</b> ${q.unit}</span></div>` : q.stmts ? `<div class="pd-row"><span class="pd-a">答え <b>${q.choices[q.ans]}</b></span></div>` : ""}
       <div class="pd-ex">${q.ex}</div>
       <button class="btn ${c.ok ? "okb" : ""} full" data-next>${isLast ? "結果を見る" : "次の問題"}</button></div></div>`; }
@@ -3672,7 +3679,7 @@ function playView(){
 function learnView(){
   const q = S.cur.q, n = S.queue.length, sb = SUB[q.subj], unit = UNITS.find(u => u.id === q.uid);
   return `<div class="playwrap" style="--c:${sb.s};--cv:${sb.v}"><div class="playtop"><button class="btn text" data-quit aria-label="やめる">✕</button><div class="bar"><i style="width:${S.idx / n * 100}%"></i></div><span class="num muted" style="font-size:14px">${S.idx + 1}/${n}</span></div>
-    <div class="stack"><div class="learn"><div class="ln-m">${svgMascot("cheer", "hop")}</div>
+    <div class="stack"><div class="learn"><div class="ln-m">${pickOnce(q, "ln", [["cheer", "hop"], ["happy", "nod"], ["happy", "sway"], ["cheer", "twirl"]]).reduce((m, a) => svgMascot(m, a))}</div>
       <div class="ln-card"><span class="ln-k">${q.head}<small>${sb.name} ・ ${unit ? unit.title : ""}</small></span><p class="ln-t">${q.t}</p>${q.n ? `<p class="ln-n">${q.n}</p>` : ""}</div></div>
       <p class="muted ln-hint">このあとすぐ、この問題が出ます。</p>
       <button class="btn full" data-next>わかった</button></div></div>`;
@@ -3681,17 +3688,17 @@ function summaryView(){
   const s = summary, n = s.node || {};
   const nextIdx = NODES.findIndex(x => x.id === n.id) + 1, hasNext = n.id && nextIdx > 0 && nextIdx < NODES.length && unlocked(nextIdx) && (s.kind === "lesson" || s.won || s.safe);
   let head;
-  if(s.kind === "lesson") head = `<div class="hero">${svgMascot(s.stars === 3 ? "cheer" : "happy", s.stars === 3 ? "jump" : "nod")}</div><h1>${s.stars === 3 ? "パーフェクト！" : "ステージクリア！"}</h1>
+  if(s.kind === "lesson") head = `<div class="hero">${reactFlask(s, s.stars === 3 ? "top" : s.stars === 2 ? "mid" : "low")}</div><h1>${s.stars === 3 ? "パーフェクト！" : "ステージクリア！"}</h1>
     <div class="bigstars">${[1, 2, 3].map(k => svgStar(s.stars >= k)).join("")}</div><p class="muted" style="margin:0">${s.total} 問中 ${s.ok} 問正解${s.stars < 3 ? "。まちがいが少ないほど星が増えます。" : "。"}</p>`;
   else if(s.kind === "mock"){
-    head = `<div class="hero">${svgMascot(s.safe ? "cheer" : s.pass ? "happy" : "think", s.safe ? "jump" : s.pass ? "nod" : "phew")}</div><h1>${s.safe ? "合格圏！" : s.pass ? "合格ライン" : "あと少し"}</h1>
+    head = `<div class="hero">${reactFlask(s, s.safe ? "top" : s.pass ? "mid" : "low")}</div><h1>${s.safe ? "合格圏！" : s.pass ? "合格ライン" : "あと少し"}</h1>
       <p class="muted" style="margin:6px 0 0">全体 ${s.totalP}% ・ ${s.safe ? "3 科目とも 7 割以上" : s.pass ? "3 科目とも 6 割以上（安全圏の 7 割まであと少し）" : "6 割に届かない科目があります"}</p>
       <div class="card mock-b" style="margin-top:14px;text-align:left">${SUBJ.map((sb, i) => `<div class="mb-row"><span>${sb.name}（${s.by[sb.id][0]}/${s.by[sb.id][1]}）</span><i class="meter"><b style="width:${s.pct[i]}%;background:${s.pct[i] >= 60 ? "" : "var(--heart)"}"></b></i><b class="num">${s.pct[i]}%</b></div>`).join("")}
       <p class="muted" style="margin:10px 0 0;font-size:14px">本番の合格基準は、3 科目それぞれ 6 割以上。このアプリでは余裕をみて 7 割以上を合格圏にしています。</p></div>`;
   }
-  else if(s.kind === "weak" || s.kind === "drill" || s.kind === "review") head = `<div class="hero">${svgMascot("happy", "nod")}</div><h1>おつかれさま</h1><p class="muted" style="margin:6px 0 0">${s.total} 問中 ${s.ok} 問正解</p>`;
+  else if(s.kind === "weak" || s.kind === "drill" || s.kind === "review") head = `<div class="hero">${reactFlask(s, s.ok / Math.max(1, s.total) >= 0.9 ? "top" : s.ok / Math.max(1, s.total) >= 0.6 ? "mid" : "low")}</div><h1>おつかれさま</h1><p class="muted" style="margin:6px 0 0">${s.total} 問中 ${s.ok} 問正解</p>`;
   else if(s.won) head = `<div class="hero">${svgBoss(n.subj, s.kind === "boss")}</div><h1>${s.kind === "mid" ? "章末テスト合格！" : `${SUB[n.subj] ? SUB[n.subj].name : ""}をクリア！`}</h1><p class="muted" style="margin:6px 0 0">${s.total} 問中 ${s.ok} 問正解</p>`;
-  else head = `<div class="hero">${svgMascot("sad", "droop")}</div><h1>ハートがなくなった…</h1><p class="muted" style="margin:6px 0 0">前のステージや一問一答で復習してから、もう一度挑戦しよう。</p>`;
+  else head = `<div class="hero">${reactFlask(s, "lose")}</div><h1>ハートがなくなった…</h1><p class="muted" style="margin:6px 0 0">前のステージや一問一答で復習してから、もう一度挑戦しよう。</p>`;
   const wrong = s.answers.filter(a => !a.ok && !a.q.retry);
   const review = wrong.length ? `<details class="card wrongs" ${s.kind === "mock" ? "open" : ""}><summary><b>まちがえた問題（${wrong.length}）</b></summary>${wrong.map(a => `<div class="wq"><div class="wq-q">${a.q.q}</div>${a.q.type === "mc" ? `<div class="wq-a">${a.q.alabel || "正解"}：${a.q.choices[a.q.ans]}</div>` : `<div class="wq-a">正解：${a.q.ans} ${a.q.unit}</div>`}<div class="wq-ex">${a.q.ex}</div></div>`).join("")}</details>` : "";
   const party = (s.stars === 3 || s.safe || (s.won && (s.kind === "mid" || s.kind === "boss"))) ? confettiHtml() : "";
@@ -3850,6 +3857,24 @@ document.addEventListener("click", async e => {
 });
 addEventListener("resize", () => { if(view === "map") drawRoads(); });
 document.documentElement.dataset.skin = "light"; document.documentElement.dataset.fs = "m";
+/* 起動したときのオープニング（化学クエストと同じ 10 種類・約 2.4 秒・タップで飛ばせる。動きを減らす設定の人には出さない） */
+function showSplash(){
+  try{ if(navigator.webdriver || matchMedia("(prefers-reduced-motion: reduce)").matches) return; }catch(e){ return; }
+  let last = 0; try{ last = +localStorage.getItem("o4_sp") || 0; }catch(e){}
+  let v = 1 + Math.floor(Math.random() * 10); if(v === last) v = v % 10 + 1;
+  try{ localStorage.setItem("o4_sp", String(v)); }catch(e){}
+  if(window.__spv) v = window.__spv;
+  const ts = ["pop", "type", "wave"][v % 3], mood = v === 7 ? "cheer" : "happy";
+  const el = document.createElement("div");
+  el.id = "splash"; el.className = `sv${v} st-${ts}`; el.setAttribute("aria-hidden", "true");
+  el.innerHTML = `<div class="sp-in"><div class="sp-stage"><span class="sp-ring"></span><span class="sp-b b1"></span><span class="sp-b b2"></span><span class="sp-b b3"></span>${v === 5 ? [1, 2, 3, 4, 5, 6].map(k => `<span class="sp-g g${k}"></span>`).join("") : ""}${v === 10 ? `<span class="sp-d d1"></span><span class="sp-d d2"></span><span class="sp-d d3"></span>` : ""}${v === 7 ? `<span class="sp-gnd"></span>` : ""}<div class="sp-m">${svgMascot(mood)}</div></div><div class="sp-t">${[..."乙4パス"].map((ch, i) => `<span style="--i:${i}">${ch}</span>`).join("")}</div><div class="sp-sub">危険物取扱者 乙種第4類</div></div>`;
+  document.body.appendChild(el);
+  let done = false;
+  const end = () => { if(done) return; done = true; el.classList.add("out"); setTimeout(() => el.remove(), 420); };
+  const t = setTimeout(end, 2450);
+  el.addEventListener("pointerdown", () => { clearTimeout(t); end(); }, { once: true });
+}
+showSplash();
 render();
 
 })();
